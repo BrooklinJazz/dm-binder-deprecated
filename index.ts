@@ -1,19 +1,9 @@
-import { ApolloServer, gql } from 'apollo-server';
-import bcrypt from 'bcryptjs';
+import { ApolloServer } from 'apollo-server';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 
+import resolvers from './graphql/resolvers';
 import typeDefs from './graphql/typeDefs';
-import User from './models/users';
-
-const npcs = [{ name: 'Example NPC' }];
-
-const resolvers = {
-  Query: {
-    npcs: () => npcs
-  },
-
-};
 
 const server = new ApolloServer({ typeDefs, resolvers });
 

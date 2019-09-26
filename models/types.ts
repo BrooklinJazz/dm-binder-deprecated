@@ -1,5 +1,9 @@
 import { Document } from 'mongoose';
 
+export interface IInput<T> {
+  input: T;
+}
+
 export interface IUserInput {
   email: string;
   password: string;
