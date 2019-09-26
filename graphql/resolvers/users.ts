@@ -1,12 +1,15 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-import { IUserInput, IInput } from '../../models/types';
+import { IInput, IUserInput } from '../../models/types';
 import User from '../../models/users';
 
 export default {
   Query: {
-    login: async ({ input: { email, password } }: IInput<IUserInput>) => {
+    login: async (
+      root: any,
+      { input: { email, password } }: IInput<IUserInput>
+    ) => {
       const user = await User.findOne({ email });
       const validPassword =
         user && (await bcrypt.compare(password, user.password));
