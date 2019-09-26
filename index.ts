@@ -8,7 +8,7 @@ import typeDefs from './graphql/typeDefs';
 const server = new ApolloServer({ typeDefs, resolvers });
 
 dotenv.config();
-
+console.log('HERE IS MY MONGO USER:::', process.env.MONGO_USER);
 mongoose
   .connect(
     `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-o0hne.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`
