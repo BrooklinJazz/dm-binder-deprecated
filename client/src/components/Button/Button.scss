@@ -1,0 +1,35 @@
+@import "../../common/theme.scss";
+@import "../../common/variables.scss";
+
+$button-list: (
+  ".DefaultButton": $default,
+  ".PrimaryButton": $primary,
+  ".SecondaryButton": $secondary,
+  ".DangerButton": $danger,
+  ".SuccessButton": $success
+);
+
+.Base {
+  outline: none;
+  border: none;
+  height: $button-height;
+  width: $button-width;
+  border-radius: $button-radius;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+@each $class, $theme-color in $button-list {
+  #{$class} {
+    @include themed() {
+      background-color: t($theme-color);
+      &:hover {
+        background-color: lighten(t($theme-color), 10%);
+      }
+      &:active {
+        background-color: t($theme-color);
+      }
+    }
+  }
+}
