@@ -6,7 +6,7 @@
     "no-var-requires": false,
     "trailing-comma": false,
     "object-literal-sort-keys": false,
-    "quotemark": [true, "single"],
+    "quotemark": [true, "double"],
     "arrow-parens": false,
     "interface-name": true
   },
