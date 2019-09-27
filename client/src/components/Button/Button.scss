@@ -1,14 +1,6 @@
 @import "../../common/theme.scss";
 @import "../../common/variables.scss";
 
-$button-list: (
-  ".DefaultButton": $default,
-  ".PrimaryButton": $primary,
-  ".SecondaryButton": $secondary,
-  ".DangerButton": $danger,
-  ".SuccessButton": $success
-);
-
 .Base {
   outline: none;
   border: none;
@@ -20,15 +12,47 @@ $button-list: (
   }
 }
 
-@each $class, $theme-color in $button-list {
+$button-list: (
+  1: (
+    ".DefaultButton",
+    $default,
+    $on-default
+  ),
+  2: (
+    ".PrimaryButton",
+    $primary,
+    $on-primary
+  ),
+  3: (
+    ".SecondaryButton",
+    $secondary,
+    $on-secondary
+  ),
+  4: (
+    ".DangerButton",
+    $danger,
+    $on-danger
+  ),
+  5: (
+    ".SuccessButton",
+    $success,
+    $on-success
+  )
+);
+
+@each $button-list, $key-number in $button-list {
+  $class: nth($key-number, 1);
+  $theme-bg: nth($key-number, 2);
+  $theme-color: nth($key-number, 3);
   #{$class} {
     @include themed() {
-      background-color: t($theme-color);
+      color: $theme-color;
+      background-color: t($theme-bg);
       &:hover {
-        background-color: lighten(t($theme-color), 10%);
+        background-color: lighten(t($theme-bg), 10%);
       }
       &:active {
-        background-color: t($theme-color);
+        background-color: t($theme-bg);
       }
     }
   }

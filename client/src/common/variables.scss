@@ -5,19 +5,22 @@ $mobile-footer-height: 40px;
 $small-screen: 600px;
 
 // theme variables
-$primary: "primary";
-$secondary: "secondary";
-$warning: "warning";
-$danger: "danger";
+
 $default: "default";
 $primary: "primary";
+$primary-variant: "primary-variant";
 $secondary: "secondary";
+$secondary-variant: "secondary-variant";
 $success: "success";
 $warning: "warning";
 $danger: "danger";
 $background: "background";
-$text-color: "text-color";
-
+$on-primary: "on-primary";
+$on-secondary: "on-secondary";
+$on-background: "on-background";
+$on-danger: "on-danger";
+$on-default: "on-default";
+$on-success: "on-success";
 // buttons
 $button-width: 100px;
 $button-height: 40px;

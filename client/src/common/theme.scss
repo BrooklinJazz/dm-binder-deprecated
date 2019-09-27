@@ -2,22 +2,36 @@ $themes: (
   light: (
     default: #9197ae,
     primary: #6200ee,
+    primary-variant: #3700b3,
     secondary: #03dac6,
+    secondary-variant: #018786,
     success: #339900,
     warning: #eed202,
     danger: #b00020,
-    background: white,
-    text-color: black
+    background: #ffffff,
+    on-primary: #ffffff,
+    on-secondary: #000000,
+    on-background: #000000,
+    on-danger: #ffffff,
+    on-default: #000000,
+    on-success: #ffffff
   ),
   dark: (
     default: #9197ae,
     primary: #bb86fc,
+    primary-variant: #3700b3,
     success: #339900,
-    secondary: #03dac6,
     warning: #eed202,
+    secondary: #03dac6,
+    secondary-variant: #03dac6,
     danger: #cf6679,
-    background: black,
-    text-color: white
+    background: #121212,
+    on-primary: #000000,
+    on-secondary: #000000,
+    on-background: #ffffff,
+    on-danger: #000000,
+    on-default: #000000,
+    on-success: #ffffff
   )
 );
 
