@@ -1,45 +1,50 @@
+import "./Button.scss";
+
 import combineClasses from "combine-classes";
 import React from "react";
 
-import "./Button.scss";
+import { Theme } from "../../common/theme";
 
 interface IButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
 
 const BaseButton = (props: IButtonProps) => (
-  <button {...props} className={combineClasses("Base", props.className)} />
+  <button
+    {...props}
+    className={combineClasses("Base", Theme.hoverable, props.className)}
+  />
 );
 
 export const DefaultButton = (props: IButtonProps) => (
   <BaseButton
     {...props}
-    className={combineClasses("DefaultButton", props.className)}
+    className={combineClasses(Theme.default, props.className)}
   />
 );
 
 export const PrimaryButton = (props: IButtonProps) => (
   <BaseButton
     {...props}
-    className={combineClasses("PrimaryButton", props.className)}
+    className={combineClasses(Theme.primary, props.className)}
   />
 );
 
 export const SecondaryButton = (props: IButtonProps) => (
   <BaseButton
     {...props}
-    className={combineClasses("SecondaryButton", props.className)}
+    className={combineClasses(Theme.secondary, props.className)}
   />
 );
 
 export const SuccessButton = (props: IButtonProps) => (
   <BaseButton
     {...props}
-    className={combineClasses("SuccessButton", props.className)}
+    className={combineClasses(Theme.success, props.className)}
   />
 );
 
 export const DangerButton = (props: IButtonProps) => (
   <BaseButton
     {...props}
-    className={combineClasses("DangerButton", props.className)}
+    className={combineClasses(Theme.danger, props.className)}
   />
 );

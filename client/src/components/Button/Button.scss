@@ -5,55 +5,10 @@
   outline: none;
   border: none;
   height: $button-height;
-  width: $button-width;
+  width: max-content;
+  min-width: $button-width;
   border-radius: $button-radius;
   &:hover {
     cursor: pointer;
-  }
-}
-
-$button-list: (
-  1: (
-    ".DefaultButton",
-    $default,
-    $on-default
-  ),
-  2: (
-    ".PrimaryButton",
-    $primary,
-    $on-primary
-  ),
-  3: (
-    ".SecondaryButton",
-    $secondary,
-    $on-secondary
-  ),
-  4: (
-    ".DangerButton",
-    $danger,
-    $on-danger
-  ),
-  5: (
-    ".SuccessButton",
-    $success,
-    $on-success
-  )
-);
-
-@each $button-list, $key-number in $button-list {
-  $class: nth($key-number, 1);
-  $theme-bg: nth($key-number, 2);
-  $theme-color: nth($key-number, 3);
-  #{$class} {
-    @include themed() {
-      color: t($theme-color);
-      background-color: t($theme-bg);
-      &:hover {
-        background-color: lighten(t($theme-bg), 10%);
-      }
-      &:active {
-        background-color: t($theme-bg);
-      }
-    }
   }
 }

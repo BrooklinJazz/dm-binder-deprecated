@@ -1,0 +1,56 @@
+@import "./common/theme.scss";
+@import "./common/variables.scss";
+
+body {
+  margin: 0;
+}
+
+$theme-list: (
+  1: (
+    ".default",
+    $default,
+    $on-default
+  ),
+  2: (
+    ".primary",
+    $primary,
+    $on-primary
+  ),
+  3: (
+    ".secondary",
+    $secondary,
+    $on-secondary
+  ),
+  4: (
+    ".danger",
+    $danger,
+    $on-danger
+  ),
+  5: (
+    ".success",
+    $success,
+    $on-success
+  )
+);
+
+@each $theme-list, $key-number in $theme-list {
+  $class: nth($key-number, 1);
+  $theme-bg: nth($key-number, 2);
+  $theme-color: nth($key-number, 3);
+  #{$class} {
+    @include themed() {
+      color: t($theme-color);
+      background-color: t($theme-bg);
+    }
+  }
+  #{$class}.hoverable {
+    @include themed() {
+      &:hover {
+        background-color: lighten(t($theme-bg), 10%);
+      }
+      &:active {
+        background-color: t($theme-bg);
+      }
+    }
+  }
+}
