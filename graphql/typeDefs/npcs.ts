@@ -4,6 +4,7 @@ export default gql`
     type Npc {
         name: String!
         description: String
+        creator: User!
     }
 
     input NpcInput {

@@ -1,11 +1,11 @@
 import Npc from '../../models/npcs';
-import { INpc, INpcInput } from '../../models/types';
+import { IContext, IInput, INpc, INpcInput } from '../../models/types';
 import User from '../../models/users';
-import { userFromId } from './merge';
+import { userFromId, checkSignedIn } from './helpers';
 
 export default {
   Query: {
-    npcs: async () => {
+    npcs: async (root: any, input: null, context: IContext) => {
       try {
         const npcs = await Npc.find().lean();
         const transformedNpcs = npcs.map((npc: INpc) => ({
@@ -20,24 +20,34 @@ export default {
   },
   Mutation: {
     // TODO determine req type
-    createNpc: async ({ input }: { input: INpcInput }, req: any) => {
-      // TODO add auth again.
-      // if (!req.isAuth) {
-      //   throw new Error('User is not authenticated');
-      // }
+    createNpc: async (
+      root: any,
+      { input }: IInput<INpcInput>,
+      context: IContext
+    ) => {
+      checkSignedIn(context);
+      const userId = context.user!._id;
       const npc = new Npc({
         ...input,
-        creator: req.userId
+        creator: userId
       });
       try {
         const createdNpc = await npc.save();
-        const dbUser = await User.findById(req.userId);
+        const dbUser = await User.findById(userId);
         if (!dbUser) {
           throw new Error('User Does Not Exist');
         }
         dbUser.npcs.push(createdNpc);
         dbUser.save();
-        return { ...createdNpc };
+        // NOTE for some reason using spread syntax
+        // makes name and description keys undefined
+        // I've posted a question on S/O: https://stackoverflow.com/questions/58126454/using-spread-syntax-with-mongoose-document-after-calling-the-save-method-result
+        return {
+          ...createdNpc,
+          description: createdNpc.description,
+          name: createdNpc.name,
+          creator: userFromId(npc.creator)
+        };
       } catch (error) {
         throw error;
       }

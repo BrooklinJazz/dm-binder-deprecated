@@ -9,6 +9,12 @@ export interface IUserInput {
   password: string;
 }
 
+export interface IAuthData {
+  userId: string;
+  token: string;
+  tokenExpiration: number;
+}
+
 export interface IUser extends Document, IUserInput {
   npcs: Array<INpc['_id']>;
 }
@@ -16,8 +22,13 @@ export interface IUser extends Document, IUserInput {
 export interface INpcInput {
   name: string;
   description: string;
+  creator: IUser;
 }
 
 export interface INpc extends Document, INpcInput {
   creator: IUser['_id'];
+}
+
+export interface IContext {
+  user?: IUser;
 }

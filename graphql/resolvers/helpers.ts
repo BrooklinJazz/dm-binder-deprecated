@@ -1,5 +1,5 @@
 import Npc from '../../models/npcs';
-import { INpc, IUser } from '../../models/types';
+import { INpc, IUser, IContext } from '../../models/types';
 import User from '../../models/users';
 
 export const npcsFromIds = (npcIds: string[]): any =>
@@ -16,3 +16,9 @@ export const userFromId = (userId: string) =>
     .catch(err => {
       throw err;
     });
+
+export const checkSignedIn = (context: IContext) => {
+  if (!context.user) {
+    throw new Error('User is not authenticated');
+  }
+}

@@ -1,14 +1,41 @@
 import { ApolloServer } from 'apollo-server';
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 
 import resolvers from './graphql/resolvers';
 import typeDefs from './graphql/typeDefs';
+import { IAuthData, IContext } from './models/types';
+import User from './models/users';
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: async ({ req }): Promise<IContext> => {
+    // get the user token from the headers
+    const token = req.headers.authorization
+      ? req.headers.authorization.split(' ')[1]
+      : '';
+    let decodedToken;
+    let user;
+    // wrapping this in try/catch but we want to throw error if it fails
+    // because some calls may not require a token
+    try {
+      decodedToken = jwt.verify(
+        token,
+        process.env.JWT_SECRET_KEY || ''
+      ) as IAuthData;
+      user = decodedToken && (await User.findById(decodedToken.userId));
+    } catch (error) {
+      console.log('Invalid Token', error);
+    }
+    // NOTE using || undefined to get around possible null type.
+    return { user: user || undefined };
+  }
+});
 
 dotenv.config();
-console.log('HERE IS MY MONGO USER:::', process.env.MONGO_USER);
+
 mongoose
   .connect(
     `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-o0hne.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`

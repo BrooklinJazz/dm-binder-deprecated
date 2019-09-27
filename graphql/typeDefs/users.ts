@@ -1,30 +1,28 @@
 import { gql } from 'apollo-server';
 
 export default gql`
+  input UserInput {
+    email: String!
+    password: String
+  }
 
-    input UserInput {
-        email: String!
-        password: String
-    }
+  type User {
+    _id: ID
+    email: String!
+    password: String
+  }
 
+  type AuthData {
+    userId: ID!
+    token: String!
+    tokenExpiration: Int!
+  }
 
-    type User {
-        _id: ID
-        email: String!
-        password: String
-    }
+  extend type Query {
+    login(input: UserInput): AuthData
+  }
 
-    type AuthData {
-        userId: ID!
-        token: String!
-        tokenExpiration: Int!
-    }
-
-    extend type Query {
-        login(input: UserInput): AuthData
-    }
-
-    extend type Mutation {
-        createUser(input: UserInput): User!
-    }
+  extend type Mutation {
+    createUser(input: UserInput): User!
+  }
 `;

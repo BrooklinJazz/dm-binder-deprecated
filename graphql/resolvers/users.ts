@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-import { IInput, IUserInput } from '../../models/types';
+import { IAuthData, IInput, IUserInput } from '../../models/types';
 import User from '../../models/users';
 
 export default {
@@ -9,13 +9,14 @@ export default {
     login: async (
       root: any,
       { input: { email, password } }: IInput<IUserInput>
-    ) => {
+    ): Promise<IAuthData> => {
       const user = await User.findOne({ email });
       const validPassword =
         user && (await bcrypt.compare(password, user.password));
       if (!user || !validPassword) {
         throw new Error('Invalid login credentials');
       }
+      console.log('MY TOKEN', process.env.JWT_SECRET_KEY);
       const token = jwt.sign(
         { userId: user.id, email: user.email },
         // NOTE using an empty string when undefined to avoid a type issue.
@@ -29,7 +30,7 @@ export default {
     createUser: async (
       root: any,
       { input: { email, password } }: IInput<IUserInput>
-    ) => {
+    ): Promise<{ email: string }> => {
       try {
         const emailExists = await User.findOne({ email });
         if (emailExists) {
@@ -41,7 +42,7 @@ export default {
           password: hashedPassword
         });
         const createdUser = await user.save();
-        return { email: createdUser.email, password: null };
+        return { email: createdUser.email };
       } catch (error) {
         throw error;
       }
