@@ -13,21 +13,22 @@ const server = new ApolloServer({
   resolvers,
   context: async ({ req }): Promise<IContext> => {
     // get the user token from the headers
-    const token = req.headers.authorization
-      ? req.headers.authorization.split(' ')[1]
-      : '';
+    const token =
+      req.headers.authorization && req.headers.authorization.split(' ')[1];
     let decodedToken;
     let user;
-    // wrapping this in try/catch but we want to throw error if it fails
-    // because some calls may not require a token
-    try {
-      decodedToken = jwt.verify(
-        token,
-        process.env.JWT_SECRET_KEY || ''
-      ) as IAuthData;
-      user = decodedToken && (await User.findById(decodedToken.userId));
-    } catch (error) {
-      console.log('Invalid Token', error);
+    // only throw an error if a token was provided but is invalid
+    // because some calls do not require a token
+    if (token) {
+      try {
+        decodedToken = jwt.verify(
+          token,
+          process.env.JWT_SECRET_KEY || ''
+        ) as IAuthData;
+        user = decodedToken && (await User.findById(decodedToken.userId));
+      } catch (error) {
+        throw new Error(error);
+      }
     }
     // NOTE using || undefined to get around possible null type.
     return { user: user || undefined };
