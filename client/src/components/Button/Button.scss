@@ -46,7 +46,7 @@ $button-list: (
   $theme-color: nth($key-number, 3);
   #{$class} {
     @include themed() {
-      color: $theme-color;
+      color: t($theme-color);
       background-color: t($theme-bg);
       &:hover {
         background-color: lighten(t($theme-bg), 10%);
