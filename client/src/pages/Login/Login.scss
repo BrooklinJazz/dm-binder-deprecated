@@ -13,11 +13,11 @@ $form-margin: 0.5fr;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: $navbar-height $form-margin 1fr $form-margin $footer-height;
   grid-template-areas:
-  "navbar navbar navbar"
-  ". . ."
-  ". form ."
-  ". . ."
-  "footer footer footer";
+    "navbar navbar navbar"
+    ". . ."
+    ". form ."
+    ". . ."
+    "footer footer footer";
 }
 
 .Login_Form {
@@ -35,6 +35,7 @@ $form-margin: 0.5fr;
 
 .Login_Header {
   grid-area: header;
+  text-transform: capitalize;
 }
 
 .Login_Content {

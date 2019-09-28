@@ -6,12 +6,12 @@ import style from "./Input.module.scss";
 interface ILabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
   children: ReactNode;
   label: string;
-  for: string;
+  htmlFor: string;
 }
 
-const Label = ({ label, children, ...props }: ILabelProps) => {
+const Label = ({ label, children, htmlFor, ...props }: ILabelProps) => {
   const child = React.cloneElement(children as any, {
-    id: props.for
+    id: htmlFor
   });
   return (
     <label {...props} className={combineClasses(style.Label)}>
