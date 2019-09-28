@@ -5,12 +5,19 @@ import React from "react";
 
 import { Theme } from "../../common/theme";
 
-interface IButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+interface IButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "default" | "outlined" | "text";
+}
 
 const BaseButton = (props: IButtonProps) => (
   <button
     {...props}
-    className={combineClasses("Base", Theme.hoverable, props.className)}
+    className={combineClasses(
+      "Base",
+      Theme.hoverable,
+      props.className,
+      props.variant
+    )}
   />
 );
 

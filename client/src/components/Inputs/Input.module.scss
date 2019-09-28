@@ -1,4 +1,19 @@
+@import "../../common/variables.scss";
+
 .Text {
   width: 100%;
   box-sizing: border-box;
+  border-radius: $input-radius;
+  height: $input-height;
+  padding-top: $input-padding;
+  padding-bottom: $input-padding;
+}
+
+.Label {
+  margin-top:20px;
+  width: 100%;
+  display:inline-block;
+  * {
+    margin-top: 10px;
+  }
 }

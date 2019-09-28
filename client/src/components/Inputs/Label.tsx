@@ -3,16 +3,22 @@ import React, { ReactNode } from "react";
 
 import style from "./Input.module.scss";
 
-interface ITextProps extends React.HTMLAttributes<HTMLLabelElement> {
+interface ILabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
   children: ReactNode;
   label: string;
+  for: string;
 }
 
-const Label = ({ label, children, ...props }: ITextProps) => (
-  <label {...props} className={combineClasses(style.Label, props.className)}>
-    {label}
-    {children}
-  </label>
-);
+const Label = ({ label, children, ...props }: ILabelProps) => {
+  const child = React.cloneElement(children as any, {
+    id: props.for
+  });
+  return (
+    <label {...props} className={combineClasses(style.Label)}>
+      {label}
+      {child}
+    </label>
+  );
+};
 
 export default Label;
