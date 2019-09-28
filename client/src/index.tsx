@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import App from "./App";
 import { Routes } from "./common/routes";
+import { AuthProvider } from "./context/auth/store";
 import Login from "./pages/Login";
 import * as serviceWorker from "./serviceWorker";
 import { ThemeProvider } from "./ThemeProvider";
@@ -14,8 +15,10 @@ ReactDOM.render(
   <BrowserRouter>
     <Switch>
       <ThemeProvider>
-        <Route path={Routes.LOGIN} component={Login} />
-        <Route path={Routes.APP} component={App} />
+        <AuthProvider>
+          <Route path={Routes.LOGIN} component={Login} />
+          <Route path={Routes.APP} component={App} />
+        </AuthProvider>
       </ThemeProvider>
     </Switch>
   </BrowserRouter>,

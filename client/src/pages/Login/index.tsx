@@ -3,7 +3,7 @@ import "./Login.scss";
 import combineClasses from "combine-classes";
 import React, { useState } from "react";
 
-import { login, signUp } from "../../api/auth";
+import { signUp } from "../../api/auth";
 import { Theme } from "../../common/theme";
 import {
   DefaultButton,
@@ -13,6 +13,9 @@ import {
 import Form from "../../components/Inputs/Form";
 import Label from "../../components/Inputs/Label";
 import Text from "../../components/Inputs/Text";
+import { useLoginAction } from "../../context/auth/actions";
+import { useAuthDispatch, useAuthState } from "../../context/auth/store";
+import { selectToken } from "../../context/auth/selectors";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -20,27 +23,26 @@ const Login = () => {
 
   const [isSigningUp, setIsSigningUp] = React.useState(true);
 
+  const dispatch = useAuthDispatch();
+  const state = useAuthState();
+  const login = useLoginAction(dispatch);
+  const token = selectToken(state);
   const handleSignUp = () => {
     signUp<{ email: string }>({ email, password }, ["email"])
       .then(res => console.log(res))
       .catch(err => console.log(err));
   };
-
   const handleLogin = () => {
-    login<{ token: string; tokenExpiration: string; userId: string }>(
-      {
-        email,
-        password
-      },
-      ["token", "tokenExpiration", "userId"]
-    )
-      .then(res => console.log(res))
-      .catch(err => console.log(err));
+    if (isSigningUp) {
+      handleSignUp();
+    } else {
+      login({ email, password });
+    }
   };
   return (
     <div className={"Login_"}>
       <Form
-        onSubmit={isSigningUp ? handleSignUp : handleLogin}
+        onSubmit={handleLogin}
         className={combineClasses(Theme.primary, "Login_Form")}
       >
         <h1 className={"Login_Header"}>{isSigningUp ? "Sign Up" : "Log In"}</h1>
@@ -77,7 +79,9 @@ const Login = () => {
           >
             switch to {isSigningUp ? "log in" : "sign up"}
           </PrimaryButton>
-          <SecondaryButton className="Submit">Signup</SecondaryButton>
+          <SecondaryButton className="Submit">
+            {isSigningUp ? "Sign Up" : "Log In"}
+          </SecondaryButton>
         </div>
       </Form>
     </div>
