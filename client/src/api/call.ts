@@ -29,19 +29,18 @@ export class Call<Input, Retval extends Object> {
   }
 
   public mutation = (action: Mutation) => {
-    return this.sendRequest("mutation", "POST")(action);
+    return this.sendRequest("mutation")(action);
   };
 
   public query = (action: Query) => {
-    return this.sendRequest("query", "GET")(action);
+    return this.sendRequest("query")(action);
   };
 
-  private sendRequest = (
-    type: "mutation" | "query",
-    method: "POST" | "GET"
-  ) => (action: Mutation | Query) => async (
+  private sendRequest = (type: "mutation" | "query") => (
+    action: Mutation | Query
+  ) => async (
     inputs: Input,
-    retVal: (keyof Required<Retval>)[]
+    retVal: Required<keyof Retval>[]
   ): Promise<Retval> => {
     const body = JSON.stringify({
       query: `
@@ -58,11 +57,12 @@ export class Call<Input, Retval extends Object> {
       body,
       headers: this.headers
     })
-      .then(res => {
-        if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Failed Request");
+      .then(async res => {
+        const decodedResponse = await res.json();
+        if ("errors" in decodedResponse) {
+          throw new Error(decodedResponse.errors[0].message || "Failed Request");
         }
-        return res.json();
+        return decodedResponse;
       })
       .then(resData => Object.values(resData.data)[0] as Retval)
       .catch((err: string) => {
