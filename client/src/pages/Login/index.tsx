@@ -5,18 +5,18 @@ import React, { useState } from "react";
 
 import { Theme } from "../../common/theme";
 import {
+  DefaultButton,
   PrimaryButton,
   SecondaryButton,
-  SuccessButton,
-  DefaultButton
+  SuccessButton
 } from "../../components/Button";
 import Form from "../../components/Inputs/Form";
 import Label from "../../components/Inputs/Label";
 import Text from "../../components/Inputs/Text";
 import { useLoginAction, useSignUpAction } from "../../context/auth/actions";
 import {
-  selectAuthIsLoading,
-  selectAuthError
+  selectAuthError,
+  selectAuthIsLoading
 } from "../../context/auth/selectors";
 import { useAuthDispatch, useAuthState } from "../../context/auth/store";
 
