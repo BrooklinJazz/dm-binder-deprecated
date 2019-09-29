@@ -5,14 +5,15 @@
   box-sizing: border-box;
   border-radius: $input-radius;
   height: $input-height;
-  padding-top: $input-padding;
-  padding-bottom: $input-padding;
+  padding: $input-padding;
+  outline: none;
+  border: none;
 }
 
 .Label {
-  margin-top:20px;
+  margin-top: 20px;
   width: 100%;
-  display:inline-block;
+  display: inline-block;
   * {
     margin-top: 10px;
   }

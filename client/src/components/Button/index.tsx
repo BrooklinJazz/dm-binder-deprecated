@@ -35,6 +35,13 @@ export const PrimaryButton = (props: IButtonProps) => (
   />
 );
 
+export const InfoButton = (props: IButtonProps) => (
+  <BaseButton
+    {...props}
+    className={combineClasses(Theme.info, props.className)}
+  />
+);
+
 export const SecondaryButton = (props: IButtonProps) => (
   <BaseButton
     {...props}

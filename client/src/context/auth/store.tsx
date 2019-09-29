@@ -7,9 +7,14 @@ const authReducer = (state: IAuthState, action: AuthAction) => {
     case "auth_start":
       return { ...state, isLoading: true };
     case "auth_fail":
-      return { ...state, token: undefined, error: action.payload.error };
+      return {
+        ...state,
+        token: undefined,
+        error: action.payload.error,
+        isLoading: false
+      };
     case "auth_success":
-      return { ...state, token: action.payload.token };
+      return { ...state, token: action.payload.token, isLoading: false };
     case "logout":
       return { ...state, token: undefined };
     default:

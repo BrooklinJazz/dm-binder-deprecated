@@ -12,6 +12,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.25",
+    "@fortawesome/free-solid-svg-icons": "^5.11.2",
+    "@fortawesome/react-fontawesome": "^0.1.4",
     "@types/bcryptjs": "^2.4.2",
     "@types/dotenv": "^6.1.1",
     "@types/jsonwebtoken": "^8.3.4",

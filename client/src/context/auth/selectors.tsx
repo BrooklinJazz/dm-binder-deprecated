@@ -1,3 +1,5 @@
 import { IAuthState } from "./types";
 
-export const selectToken = (state: IAuthState) => state.token;
+export const selectAuthToken = (state: IAuthState) => state.token;
+export const selectAuthIsLoading = (state: IAuthState) => state.isLoading;
+export const selectAuthError = (state: IAuthState) => state.error;

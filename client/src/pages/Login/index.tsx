@@ -4,11 +4,20 @@ import combineClasses from "combine-classes";
 import React, { useState } from "react";
 
 import { Theme } from "../../common/theme";
-import { PrimaryButton, SecondaryButton } from "../../components/Button";
+import {
+  PrimaryButton,
+  SecondaryButton,
+  SuccessButton,
+  DefaultButton
+} from "../../components/Button";
 import Form from "../../components/Inputs/Form";
 import Label from "../../components/Inputs/Label";
 import Text from "../../components/Inputs/Text";
 import { useLoginAction, useSignUpAction } from "../../context/auth/actions";
+import {
+  selectAuthIsLoading,
+  selectAuthError
+} from "../../context/auth/selectors";
 import { useAuthDispatch, useAuthState } from "../../context/auth/store";
 
 const Login = () => {
@@ -17,8 +26,11 @@ const Login = () => {
 
   const [isSigningUp, setIsSigningUp] = React.useState(true);
 
-  const dispatch = useAuthDispatch();
   const state = useAuthState();
+  const isLoading = selectAuthIsLoading(state);
+  const error = selectAuthError(state);
+
+  const dispatch = useAuthDispatch();
   const login = useLoginAction(dispatch);
   const signUp = useSignUpAction(dispatch);
 
@@ -32,25 +44,21 @@ const Login = () => {
   return (
     <div className={"Login_"}>
       <Form
+        isLoading={isLoading}
         onSubmit={handleLogin}
-        className={combineClasses(Theme.primary, "Login_Form")}
+        className={combineClasses(Theme.default, "Login_Form")}
       >
         <h1 className={"Login_Header"}>{isSigningUp ? "Sign Up" : "Log In"}</h1>
         <div className={"Login_Content"}>
-          <Label htmlFor="email" className={"Login_Email"} label="Email">
+          <Label htmlFor="email" label="Email">
             <Text
               id="email"
-              className={"Login_Email"}
               type="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
             />
           </Label>
-          <Label
-            htmlFor="password"
-            className={"Login_Password"}
-            label="Password"
-          >
+          <Label htmlFor="password" label="Password">
             <Text
               type="password"
               value={password}
@@ -59,7 +67,7 @@ const Login = () => {
           </Label>
         </div>
         <div className={"Login_Buttons"}>
-          <PrimaryButton
+          <DefaultButton
             onClick={e => {
               e.preventDefault();
               setIsSigningUp(!isSigningUp);
@@ -68,10 +76,10 @@ const Login = () => {
             className="Switch"
           >
             switch to {isSigningUp ? "log in" : "sign up"}
-          </PrimaryButton>
-          <SecondaryButton className="Submit">
+          </DefaultButton>
+          <SuccessButton className="Submit">
             {isSigningUp ? "Sign Up" : "Log In"}
-          </SecondaryButton>
+          </SuccessButton>
         </div>
       </Form>
     </div>

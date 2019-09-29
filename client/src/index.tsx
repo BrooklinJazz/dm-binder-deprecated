@@ -13,14 +13,14 @@ import { ThemeProvider } from "./ThemeProvider";
 
 ReactDOM.render(
   <BrowserRouter>
-    <Switch>
-      <ThemeProvider>
-        <AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <Switch>
           <Route path={Routes.LOGIN} component={Login} />
           <Route path={Routes.APP} component={App} />
-        </AuthProvider>
-      </ThemeProvider>
-    </Switch>
+        </Switch>
+      </AuthProvider>
+    </ThemeProvider>
   </BrowserRouter>,
   document.getElementById("root")
 );
