@@ -1,6 +1,5 @@
 import { login } from "../../api/auth";
-import { useAuthDispatch } from "./store";
-import { ILoginAction, ILogoutAction, AuthDispatch } from "./types";
+import { AuthDispatch, ILoginAction, ILogoutAction } from "./types";
 
 const loginRequestSuccess = (
   payload: ILoginAction["payload"]

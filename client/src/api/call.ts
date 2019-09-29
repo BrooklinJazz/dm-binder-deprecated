@@ -17,7 +17,7 @@ const inputFromObj = (obj: { [key: string]: any }) =>
     )
     .join(", ");
 
-export class Call<Input, Retval extends Object> {
+export class Call<Input, Retval extends object> {
   public readonly token: string;
   public readonly headers: Headers;
   constructor(token: string) {
@@ -43,7 +43,6 @@ export class Call<Input, Retval extends Object> {
     inputs: Input,
     retVal: (keyof Required<Retval>)[]
   ): Promise<Retval> => {
-    console.log("SEND REQUEST");
     const body = JSON.stringify({
       query: `
                 ${type} {
@@ -54,14 +53,12 @@ export class Call<Input, Retval extends Object> {
                 }
             `
     });
-    console.log("ABOUT TO FETCH");
     return await fetch(BASE_URL, {
       method: "POST",
       body,
       headers: this.headers
     })
       .then(res => {
-        console.log({ res });
         if (res.status !== 200 && res.status !== 201) {
           throw new Error("Failed Request");
         }
