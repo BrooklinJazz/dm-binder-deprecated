@@ -1,6 +1,8 @@
 import React, { createContext, ReactNode, useContext, useReducer } from "react";
 
 import { AuthAction, AuthDispatch, IAuthState } from "./types";
+import { valueFromStorage } from "../../common/helpers";
+import { LocalStorage } from "../../common/constants";
 
 const authReducer = (state: IAuthState, action: AuthAction) => {
   switch (action.type) {
@@ -27,7 +29,7 @@ const AuthStateContext = createContext<IAuthState | undefined>(undefined);
 const AuthDispatchContext = createContext<AuthDispatch | undefined>(undefined);
 
 const initialState: IAuthState = {
-  token: undefined,
+  token: valueFromStorage(LocalStorage.TOKEN),
   isLoading: false
 };
 
