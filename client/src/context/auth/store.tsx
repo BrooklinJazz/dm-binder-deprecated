@@ -1,27 +1,35 @@
 import React, { createContext, ReactNode, useContext, useReducer } from "react";
 
-import { AuthAction, AuthDispatch, IAuthState } from "./types";
-import { valueFromStorage } from "../../common/helpers";
 import { LocalStorage } from "../../common/constants";
+import { valueFromStorage } from "../../common/helpers";
+import { AuthAction, AuthDispatch, IAuthState } from "./types";
 
 const authReducer = (state: IAuthState, action: AuthAction) => {
+  console.log(action.type, "payload" in action && action.payload, state);
+  let nextState = state;
   switch (action.type) {
     case "auth_start":
-      return { ...state, isLoading: true };
+      nextState = { ...state, isLoading: true };
+      break;
     case "auth_fail":
-      return {
+      nextState = {
         ...state,
         token: undefined,
         error: action.payload.error,
         isLoading: false
       };
+      break;
     case "auth_success":
-      return { ...state, token: action.payload.token, isLoading: false };
+      nextState = { ...state, token: action.payload.token, isLoading: false };
+      break;
     case "logout":
-      return { ...state, token: undefined };
+      nextState = { ...state, token: undefined };
+      break;
     default:
       throw new Error(`unhandled action type ${action!.type}`);
   }
+  console.log(action.type, "payload" in action && action.payload, nextState);
+  return nextState;
 };
 
 const AuthStateContext = createContext<IAuthState | undefined>(undefined);

@@ -1,6 +1,8 @@
-import Npc from '../../models/npcs';
-import { IContext, INpc, IUser } from '../../models/types';
-import User from '../../models/users';
+import jwt from "jsonwebtoken";
+
+import Npc from "../../models/npcs";
+import { IContext, INpc, IUser } from "../../models/types";
+import User from "../../models/users";
 
 export const npcsFromIds = (npcIds: string[]): any =>
   Npc.find({ _id: { $in: npcIds } })
@@ -19,6 +21,14 @@ export const userFromId = (userId: string) =>
 
 export const checkSignedIn = (context: IContext) => {
   if (!context.user) {
-    throw new Error('User is not authenticated');
+    throw new Error("User is not authenticated");
   }
 };
+
+export const authTokenFromUser = (user: IUser) =>
+  jwt.sign(
+    { userId: user.id, email: user.email },
+    // NOTE using an empty string when undefined to avoid a type issue.
+    process.env.JWT_SECRET_KEY || "",
+    { expiresIn: "1h" }
+  );

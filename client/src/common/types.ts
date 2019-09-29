@@ -8,10 +8,11 @@ export interface ISignUpRetval {
   email: string;
 }
 
-export interface ILoginRetval {
+export interface IToken {
   userId: string;
-  token: string;
-  tokenExpiration: string;
+  email: string;
+  exp: number;
+  iat: number;
 }
 
 export interface INPCInput {
