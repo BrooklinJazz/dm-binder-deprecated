@@ -1,12 +1,12 @@
-import { ApolloServer } from 'apollo-server';
-import dotenv from 'dotenv';
-import jwt from 'jsonwebtoken';
-import mongoose from 'mongoose';
+import { ApolloServer } from "apollo-server";
+import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
-import resolvers from './graphql/resolvers';
-import typeDefs from './graphql/typeDefs';
-import { IAuthData, IContext } from './models/types';
-import User from './models/users';
+import resolvers from "./graphql/resolvers";
+import typeDefs from "./graphql/typeDefs";
+import { IAuthData, IContext } from "./models/types";
+import User from "./models/users";
 
 const server = new ApolloServer({
   typeDefs,
@@ -14,7 +14,7 @@ const server = new ApolloServer({
   context: async ({ req }): Promise<IContext> => {
     // get the user token from the headers
     const token =
-      req.headers.authorization && req.headers.authorization.split(' ')[1];
+      req.headers.authorization && req.headers.authorization.split(" ")[1];
     let decodedToken;
     let user;
     // only throw an error if a token was provided but is invalid
@@ -23,7 +23,7 @@ const server = new ApolloServer({
       try {
         decodedToken = jwt.verify(
           token,
-          process.env.JWT_SECRET_KEY || ''
+          process.env.JWT_SECRET_KEY || ""
         ) as IAuthData;
         user = decodedToken && (await User.findById(decodedToken.userId));
       } catch (error) {
