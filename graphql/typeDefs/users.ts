@@ -23,6 +23,6 @@ export default gql`
   }
 
   extend type Mutation {
-    createUser(input: UserInput): User!
+    createUser(input: UserInput): AuthData!
   }
 `;

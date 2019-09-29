@@ -1,8 +1,10 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
-import { IAuthData, IInput, IUserInput } from '../../models/types';
-import User from '../../models/users';
+import { IAuthData, IInput, IUserInput } from "../../models/types";
+import User from "../../models/users";
+import { authTokenFromUser } from "./helpers";
+import { UserInputError } from "apollo-server";
 
 export default {
   Query: {
@@ -14,15 +16,9 @@ export default {
       const validPassword =
         user && (await bcrypt.compare(password, user.password));
       if (!user || !validPassword) {
-        throw new Error('Invalid login credentials');
+        throw new UserInputError("Invalid login credentials");
       }
-      console.log('MY TOKEN', process.env.JWT_SECRET_KEY);
-      const token = jwt.sign(
-        { userId: user.id, email: user.email },
-        // NOTE using an empty string when undefined to avoid a type issue.
-        process.env.JWT_SECRET_KEY || '',
-        { expiresIn: '1h' }
-      );
+      const token = authTokenFromUser(user);
       return { userId: user.id, token, tokenExpiration: 1 };
     }
   },
@@ -30,11 +26,11 @@ export default {
     createUser: async (
       root: any,
       { input: { email, password } }: IInput<IUserInput>
-    ): Promise<{ email: string }> => {
+    ): Promise<IAuthData> => {
       try {
         const emailExists = await User.findOne({ email });
         if (emailExists) {
-          throw new Error('That email is already taken');
+          throw new UserInputError("That email is already taken");
         }
         const hashedPassword = await bcrypt.hash(password, 12);
         const user = new User({
@@ -42,7 +38,8 @@ export default {
           password: hashedPassword
         });
         const createdUser = await user.save();
-        return { email: createdUser.email };
+        const token = authTokenFromUser(createdUser);
+        return { userId: createdUser.id, token, tokenExpiration: 1 };
       } catch (error) {
         throw error;
       }
