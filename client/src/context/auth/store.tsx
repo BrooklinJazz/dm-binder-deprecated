@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useContext, useReducer } from "react";
+import React, { createContext, ReactNode, useReducer } from "react";
 
 import { LocalStorage } from "../../common/constants";
 import { valueFromStorage } from "../../common/helpers";
@@ -12,6 +12,7 @@ const authReducer = (state: IAuthState, action: AuthAction) => {
       nextState = { ...state, isLoading: true };
       break;
     case "auth_fail":
+      console.log(action.payload.error);
       nextState = {
         ...state,
         token: undefined,
@@ -38,7 +39,8 @@ const AuthDispatchContext = createContext<AuthDispatch | undefined>(undefined);
 
 const initialState: IAuthState = {
   token: valueFromStorage(LocalStorage.TOKEN),
-  isLoading: false
+  isLoading: false,
+  error: undefined
 };
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {

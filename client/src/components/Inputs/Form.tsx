@@ -20,7 +20,9 @@ const Form = ({
   ...props
 }: IFormProps) => {
   const [submitted, setSubmitted] = React.useState(false);
+  const displaySnackbar = Boolean(submitted) && Boolean(error);
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    setSubmitted(false);
     setSubmitted(true);
     e.preventDefault();
     onSubmit(e);
@@ -35,7 +37,11 @@ const Form = ({
         {children}
         {isLoading && <Loading />}
       </form>
-      {submitted && error && <DangerSnackbar message={error} />}
+      <DangerSnackbar
+        close={() => setSubmitted(false)}
+        isOpen={displaySnackbar}
+        message={error}
+      />
     </>
   );
 };

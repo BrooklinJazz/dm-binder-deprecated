@@ -43,7 +43,9 @@ export const useSignUpAction = (dispatch: AuthDispatch) => ({
     ["token", "tokenExpiration", "userId"]
   )
     .then(({ token }) => dispatch(authRequestSuccess({ token })))
-    .catch(err => dispatch(authRequestFail(err)));
+    .catch(({ message }: Error) =>
+      dispatch(authRequestFail({ error: message }))
+    );
 };
 
 export const useLoginAction = (dispatch: AuthDispatch) => ({
@@ -59,5 +61,7 @@ export const useLoginAction = (dispatch: AuthDispatch) => ({
     ["token", "tokenExpiration", "userId"]
   )
     .then(({ token }) => dispatch(authRequestSuccess({ token })))
-    .catch(err => dispatch(authRequestFail(err)));
+    .catch(({ message }: Error) =>
+      dispatch(authRequestFail({ error: message }))
+    );
 };

@@ -1,7 +1,6 @@
 import combineClasses from "combine-classes";
 import React from "react";
 
-import { Theme } from "../../common/theme";
 import style from "./Input.module.scss";
 
 interface ITextProps extends React.InputHTMLAttributes<HTMLInputElement> {}

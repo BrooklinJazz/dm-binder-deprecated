@@ -23,3 +23,5 @@ export interface INPCInput {
 export interface INPC extends INPCInput {
   _id: string;
 }
+
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;

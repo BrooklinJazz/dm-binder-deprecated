@@ -47,6 +47,7 @@ const Login = () => {
         isLoading={isLoading}
         onSubmit={handleLogin}
         className={combineClasses(Theme.default, "Login_Form")}
+        error={error}
       >
         <h1 className={"Login_Header"}>{isSigningUp ? "Sign Up" : "Log In"}</h1>
         <div className={"Login_Content"}>

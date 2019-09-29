@@ -16,7 +16,6 @@ import { ThemeProvider } from "./ThemeProvider";
 const PageRouting = () => {
   const state = useAuthState();
   const isLoggedIn = selectIsLoggedIn(state);
-  console.log(isLoggedIn, state);
   return (
     <Switch>
       <AuthRoute

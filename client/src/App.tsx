@@ -1,6 +1,6 @@
 import "./App.scss";
 
-import React, { useState } from "react";
+import React from "react";
 
 import {
   DangerButton,
