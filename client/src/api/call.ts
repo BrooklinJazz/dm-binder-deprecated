@@ -65,7 +65,7 @@ export class Call<Input, Retval extends Object> {
         return res.json();
       })
       .then(resData => Object.values(resData.data)[0] as Retval)
-      .catch(err => {
+      .catch((err: string) => {
         throw new Error(err);
       });
   };

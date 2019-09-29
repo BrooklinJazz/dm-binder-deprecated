@@ -1,24 +1,56 @@
-import { login } from "../../api/auth";
-import { AuthDispatch, ILoginAction, ILogoutAction } from "./types";
+import { login, signUp } from "../../api/auth";
+import {
+  AuthDispatch,
+  IAuthFailAction,
+  IAuthStartAction,
+  IAuthSuccessAction,
+  ILogoutAction,
+  IUserInput
+} from "./types";
 
-const loginRequestSuccess = (
-  payload: ILoginAction["payload"]
-): ILoginAction => ({
-  type: "login",
+const authRequestStart = (): IAuthStartAction => ({
+  type: "auth_start"
+});
+
+const authRequestFail = (
+  payload: IAuthFailAction["payload"]
+): IAuthFailAction => ({
+  type: "auth_fail",
   payload
 });
 
-const logoutAction = (): ILogoutAction => ({
+const authRequestSuccess = (
+  payload: IAuthSuccessAction["payload"]
+): IAuthSuccessAction => ({
+  type: "auth_success",
+  payload
+});
+
+export const logoutAction = (): ILogoutAction => ({
   type: "logout"
 });
 
-const useLoginAction = (dispatch: AuthDispatch) => ({
+export const useSignUpAction = (dispatch: AuthDispatch) => ({
   email,
   password
-}: {
-  email: string;
-  password: string;
-}) => {
+}: IUserInput) => {
+  dispatch(authRequestStart());
+  signUp<{ token: string; tokenExpiration: string; userId: string }>(
+    {
+      email,
+      password
+    },
+    ["token", "tokenExpiration", "userId"]
+  )
+    .then(({ token }) => dispatch(authRequestSuccess({ token })))
+    .catch(err => dispatch(authRequestFail(err)));
+};
+
+export const useLoginAction = (dispatch: AuthDispatch) => ({
+  email,
+  password
+}: IUserInput) => {
+  dispatch(authRequestStart());
   login<{ token: string; tokenExpiration: string; userId: string }>(
     {
       email,
@@ -26,8 +58,6 @@ const useLoginAction = (dispatch: AuthDispatch) => ({
     },
     ["token", "tokenExpiration", "userId"]
   )
-    .then(({ token }) => dispatch(loginRequestSuccess({ token })))
-    .catch(err => console.log(err));
+    .then(({ token }) => dispatch(authRequestSuccess({ token })))
+    .catch(err => dispatch(authRequestFail(err)));
 };
-
-export { useLoginAction };

@@ -3,19 +3,13 @@ import "./Login.scss";
 import combineClasses from "combine-classes";
 import React, { useState } from "react";
 
-import { signUp } from "../../api/auth";
 import { Theme } from "../../common/theme";
-import {
-  DefaultButton,
-  PrimaryButton,
-  SecondaryButton
-} from "../../components/Button";
+import { PrimaryButton, SecondaryButton } from "../../components/Button";
 import Form from "../../components/Inputs/Form";
 import Label from "../../components/Inputs/Label";
 import Text from "../../components/Inputs/Text";
-import { useLoginAction } from "../../context/auth/actions";
+import { useLoginAction, useSignUpAction } from "../../context/auth/actions";
 import { useAuthDispatch, useAuthState } from "../../context/auth/store";
-import { selectToken } from "../../context/auth/selectors";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -26,15 +20,11 @@ const Login = () => {
   const dispatch = useAuthDispatch();
   const state = useAuthState();
   const login = useLoginAction(dispatch);
-  const token = selectToken(state);
-  const handleSignUp = () => {
-    signUp<{ email: string }>({ email, password }, ["email"])
-      .then(res => console.log(res))
-      .catch(err => console.log(err));
-  };
+  const signUp = useSignUpAction(dispatch);
+
   const handleLogin = () => {
     if (isSigningUp) {
-      handleSignUp();
+      signUp({ email, password });
     } else {
       login({ email, password });
     }
