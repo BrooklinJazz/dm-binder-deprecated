@@ -17,7 +17,7 @@ const inputFromObj = (obj: { [key: string]: any }) =>
     )
     .join(", ");
 
-export class Call<Input, Retval extends object> {
+export class Call<Input, Retval extends Object> {
   public readonly token: string;
   public readonly headers: Headers;
   constructor(token: string) {
